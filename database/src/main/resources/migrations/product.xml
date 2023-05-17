@@ -9,15 +9,6 @@
     <property name="table.name" global="false" value="product"/>
     <property name="author" global="false" value="adidyk"/>
 
-    <changeSet id="seq-${table.name}" author="${author}">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <sequenceExists sequenceName="${table.name}_id_seq"/>
-            </not>
-        </preConditions>
-        <createSequence minValue="1" incrementBy="1" sequenceName="${table.name}_id_seq" startValue="1"/>
-    </changeSet>
-
     <changeSet id="create_table_${table.name}" author="${author}">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -25,18 +16,55 @@
             </not>
         </preConditions>
         <createTable tableName="${table.name}">
-            <column name="id" type="bigint"
-                    autoIncrement="${autoIncrement}"
-                    defaultValueSequenceNext="${table.name}_id_seq"
-                    remarks="Автоматически сгенерированный идентификатор">
+            <column name="name" type="varchar">
                 <constraints primaryKey="true" primaryKeyName="pk_${table.name}_id"/>
-            </column>
-            <column name="product" type="varchar">
-                <constraints nullable="false"/>
             </column>
             <column name="count" type="bigint">
                 <constraints nullable="true"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="insert_data_${table.name}" author="${author}">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="${table.name}"/>
+            <tableIsEmpty tableName="${table.name}"/>
+        </preConditions>
+        <insert tableName="${table.name}">
+            <column name="name" value="BUN"/>
+            <column name="count" value="10000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="SAUCE"/>
+            <column name="count" value="10000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="TOMATO"/>
+            <column name="count" value="10000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="SALAD"/>
+            <column name="count" value="10000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="CUCUMBER"/>
+            <column name="count" value="10000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="MEAT"/>
+            <column name="count" value="20000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="BACON"/>
+            <column name="count" value="5000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="CHEESE"/>
+            <column name="count" value="30000"/>
+        </insert>
+        <insert tableName="${table.name}">
+            <column name="name" value="ONION"/>
+            <column name="count" value="15000"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

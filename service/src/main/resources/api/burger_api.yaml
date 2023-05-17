@@ -1,11 +1,11 @@
 /burger:
   post:
     requestBody:
-      description: Заказ бургера
+      description: Аргументы для добавления тэгов турнира
       content:
         'application/json':
           schema:
-            type: object
+            $ref: './schemas/burger_schema.yaml#/TBurgerCreate'
     summary: Заказать бургер
     operationId: orderBurger
     tags:

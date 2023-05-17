@@ -1,0 +1,10 @@
+TBurgerCreate:
+  type: object
+  required:
+    - name
+    - count
+  properties:
+    name:
+      type: string
+    count:
+      type: integer

@@ -1,0 +1,15 @@
+/burger:
+  post:
+    requestBody:
+      description: Заказ бургера
+      content:
+        'application/json':
+          schema:
+            type: object
+    summary: Заказать бургер
+    operationId: orderBurger
+    tags:
+      - Burger
+    responses:
+      '201':
+        description: Заказ принят

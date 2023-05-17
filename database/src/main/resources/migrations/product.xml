@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="autoIncrement" value="false" dbms="postgresql,mssql,oracle"/>
+    <property name="autoIncrement" value="true" dbms="h2"/>
+
+    <property name="table.name" global="false" value="product"/>
+    <property name="author" global="false" value="adidyk"/>
+
+    <changeSet id="seq-${table.name}" author="${author}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="${table.name}_id_seq"/>
+            </not>
+        </preConditions>
+        <createSequence minValue="1" incrementBy="1" sequenceName="${table.name}_id_seq" startValue="1"/>
+    </changeSet>
+
+    <changeSet id="create_table_${table.name}" author="${author}">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="${table.name}"/>
+            </not>
+        </preConditions>
+        <createTable tableName="${table.name}">
+            <column name="id" type="bigint"
+                    autoIncrement="${autoIncrement}"
+                    defaultValueSequenceNext="${table.name}_id_seq"
+                    remarks="Автоматически сгенерированный идентификатор">
+                <constraints primaryKey="true" primaryKeyName="pk_${table.name}_id"/>
+            </column>
+            <column name="product" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

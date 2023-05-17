@@ -1,0 +1,84 @@
+server:
+  port : ${SERVER_PORT}
+  max-http-header-size: 100000
+spring:
+  profiles:
+    include: dev
+  liquibase:
+    change-log: ${LIQUIBASE_CHANGELOG}
+    enabled: ${LIQUIBASE_ENABLED}
+  messages:
+    basename: i18n.messages
+  datasource:
+    url: ${DB_URL}
+    driverClassName: ${DB_DRIVER}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        generate_statistics: true
+        order_inserts: true
+        order_updates: true
+        format_sql: false
+        jdbc:
+          batch_size: 50
+          batch_versioned_data: true
+        show-sql: false
+        dialect: org.hibernate.dialect.PostgresPlusDialect
+        default_schema: ${DB_SCHEMA:public}
+  kafka:
+    enabled: ${KAFKA_ENABLED}
+    bootstrap-servers: ${KAFKA_URL}
+    admin:
+      properties:
+        request.timeout.ms: ${KAFKA_REQUEST_TIMEOUT:5000}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_ID}
+      auto-offset-reset: latest
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
+
+decorator.datasource.p6spy.enable-logging: true
+decorator.datasource.p6spy.multiline: true
+decorator.datasource.p6spy.logging: slf4j
+
+
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: TRACE
+
+odds:
+  use-fit-odds: true
+  difference:
+    min: 0.10
+  margin:
+    max: 30
+  fit:
+    limit: 10000
+    error:
+      max: 20
+
+betexplorer:
+  main: https://www.betexplorer.com/
+  store: ${BE_FILE_STORAGE}
+  paths:
+    soccer: soccer/
+    results: results/
+
+big-data:
+  output: ${BIG_DATA_OUTPUT_DIR}

@@ -1,0 +1,14 @@
+SERVER_PORT: 7081
+
+DB_USER: postgres
+DB_PASSWORD: postgres
+DB_URL: jdbc:postgresql://localhost:5432/prod?currentSchema=burgers&reWriteBatchedInserts=true
+DB_DRIVER: org.postgresql.Driver
+DB_SCHEMA: burgers
+
+KAFKA_URL: 192.168.31.152:9092
+KAFKA_ENABLED: false
+KAFKA_CONSUMER_ID: burgers-dev
+
+LIQUIBASE_CHANGELOG: classpath:rootChangeLog.xml
+LIQUIBASE_ENABLED: false

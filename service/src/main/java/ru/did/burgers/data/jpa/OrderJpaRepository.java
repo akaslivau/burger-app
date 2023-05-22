@@ -2,8 +2,8 @@ package ru.did.burgers.data.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import ru.did.burgers.domain.model.Product;
+import ru.did.burgers.domain.model.OrderEntity;
 
-public interface ProductJpaRepository extends JpaRepository<Product, String>, QuerydslPredicateExecutor<Product> {
+public interface OrderJpaRepository extends JpaRepository<OrderEntity, Long>, QuerydslPredicateExecutor<OrderEntity> {
 
 }

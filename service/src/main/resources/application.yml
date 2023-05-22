@@ -37,17 +37,17 @@ spring:
       properties:
         request.timeout.ms: ${KAFKA_REQUEST_TIMEOUT:5000}
     consumer:
+      properties:
+        max.poll.interval.ms: 600000
+        max.poll.records: 10
       group-id: ${KAFKA_CONSUMER_ID}
       auto-offset-reset: latest
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-
-
-decorator.datasource.p6spy.enable-logging: true
-decorator.datasource.p6spy.multiline: true
-decorator.datasource.p6spy.logging: slf4j
-
+integration:
+  order:
+    burger: ${ORDER_BURGER_COMMAND_TOPIC:order-burger-command}
 
 #logging:
 #  level:
@@ -61,24 +61,3 @@ decorator.datasource.p6spy.logging: slf4j
 #  level:
 #    org.hibernate.SQL: DEBUG
 #    org.hibernate.type: TRACE
-
-odds:
-  use-fit-odds: true
-  difference:
-    min: 0.10
-  margin:
-    max: 30
-  fit:
-    limit: 10000
-    error:
-      max: 20
-
-betexplorer:
-  main: https://www.betexplorer.com/
-  store: ${BE_FILE_STORAGE}
-  paths:
-    soccer: soccer/
-    results: results/
-
-big-data:
-  output: ${BIG_DATA_OUTPUT_DIR}

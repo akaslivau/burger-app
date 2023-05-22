@@ -1,4 +1,4 @@
-package ru.did.burgers.utils.exception;
+package ru.did.burgers.utils;
 
 
 import lombok.RequiredArgsConstructor;

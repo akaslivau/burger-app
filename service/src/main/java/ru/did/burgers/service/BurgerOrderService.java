@@ -24,9 +24,13 @@ public class BurgerOrderService implements BurgerApiDelegate {
 
     @Override
     public ResponseEntity<Void> orderBurger(TBurgerCreate dto) {
+        processOrder(dto);
+        return NO_CONTENT;
+    }
+
+    public void processOrder(TBurgerCreate dto) {
         BurgerOrder order = parse(dto);
         kitchenService.acceptOrder(Collections.singleton(order));
-        return NO_CONTENT;
     }
 
     private BurgerOrder parse(TBurgerCreate dto) {

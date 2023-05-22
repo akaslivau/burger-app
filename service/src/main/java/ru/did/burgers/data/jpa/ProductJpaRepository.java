@@ -1,4 +1,4 @@
-package ru.did.burgers.domain.repository.jpa;
+package ru.did.burgers.data.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;

@@ -26,7 +26,7 @@ public class KitchenService {
     @Transactional
     public void acceptOrder(Iterable<BurgerOrder> orders) {
         Map<ProductNameEnum, Long> products = countProducts(orders);
-        boolean allProductsPresent = verifyProductsCount(products);
+        boolean allProductsPresent = updateProducts(products);
         if (!allProductsPresent) {
             throw new IllegalArgumentException("Не хватает продуктов на заказ, беда!");
         }
@@ -47,7 +47,7 @@ public class KitchenService {
         return map;
     }
 
-    private boolean verifyProductsCount(Map<ProductNameEnum, Long> products) {
+    private boolean updateProducts(Map<ProductNameEnum, Long> products) {
         for (Map.Entry<ProductNameEnum, Long> entry : products.entrySet()) {
             ProductNameEnum product = entry.getKey();
             Long count = entry.getValue();

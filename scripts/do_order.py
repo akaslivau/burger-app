@@ -1,9 +1,9 @@
 import asyncio
 import json
+import uuid
 
 import aiohttp
-
-from kafka_core import send_message, get_uuid
+from kafka import KafkaProducer
 
 # kafka
 BROKER = '192.168.31.152:9092'
@@ -17,12 +17,8 @@ headers = {
 
 # list
 orders = [
-  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10},
-  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10},
-  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10},
-  {'source': 'rest', 'name': 'SIMPLE_HAMBURGER', 'count': 10},
-  {'source': 'rest', 'name': 'SIMPLE_HAMBURGER', 'count': 10},
-  {'source': 'rest', 'name': 'SIMPLE_HAMBURGER', 'count': 10}
+  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 25},
+  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 25}
 ]
 
 kafka = [x for x in orders if x['source'] == 'kafka']
@@ -30,25 +26,27 @@ rest = [x for x in orders if x['source'] == 'rest']
 
 
 async def kafka_async():
-  ret = await asyncio.gather(
-      *[kafka_msg(payload) for payload in kafka])
-  print("Kafka finalized all. Len {}.".format(len(ret)))
+  p = KafkaProducer(bootstrap_servers=[BROKER])
+  payloads = flatten(kafka)
+  coroutines = [kafka_msg(payload, p) for payload in payloads]
+  await asyncio.gather(*coroutines)
+  print('Kafka sent')
 
 
-async def kafka_msg(item):
-  del item['source']
+async def kafka_msg(item, producer):
   msg = json.dumps(item)
   kafka_headers = [
-    ('uuid', get_uuid()),
+    ('uuid', str.encode(str(uuid.uuid4()))),
   ]
-  send_message(BROKER, TOPIC, msg, kafka_headers)
+  producer.send(topic=TOPIC, value=str.encode(msg), headers=kafka_headers)
 
 
 async def rest_async():
   async with aiohttp.ClientSession(headers=headers) as session:
-    ret = await asyncio.gather(
-        *[post(session, json.dumps(payload)) for payload in rest])
-  print("Rest finalized all. Len {}.".format(len(ret)))
+    payloads = flatten(rest)
+    coroutines = [post(session, json.dumps(payload)) for payload in payloads]
+    await asyncio.gather(*coroutines)
+  print("Rest sent")
 
 
 async def post(session, json_data):
@@ -57,6 +55,16 @@ async def post(session, json_data):
       await response.read()
   except Exception as e:
     print("Error {}.".format(e.__class__))
+
+
+def flatten(items):
+  result = []
+  for item in items:
+    times = item['times']
+    del item['times']
+    del item['source']
+    result.extend([item] * times)
+  return result
 
 
 asyncio.run(rest_async())

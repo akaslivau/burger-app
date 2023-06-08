@@ -17,8 +17,8 @@ headers = {
 
 # list
 orders = [
-  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 25},
-  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 25}
+  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 10},
+  # {'source': 'rest', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 10},
 ]
 
 kafka = [x for x in orders if x['source'] == 'kafka']

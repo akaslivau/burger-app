@@ -46,6 +46,7 @@ public class ConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        factory.setConcurrency(20);
         factory.setErrorHandler(new SeekToCurrentErrorHandler());
         return factory;
     }

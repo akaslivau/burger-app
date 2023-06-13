@@ -14,6 +14,8 @@ spring:
     driverClassName: ${DB_DRIVER}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+    hikari:
+      transaction-isolation: TRANSACTION_READ_COMMITTED # TRANSACTION_READ_COMMITTED / TRANSACTION_REPEATABLE_READ / TRANSACTION_SERIALIZABLE
   jpa:
     show-sql: false
     hibernate:

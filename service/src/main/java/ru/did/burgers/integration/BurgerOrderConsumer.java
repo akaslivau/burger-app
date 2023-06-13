@@ -30,9 +30,6 @@ public class BurgerOrderConsumer {
 
   @KafkaHandler
   public void listen(String message, @Header(value = "uuid", required = false) String msgGuid) {
-    String uuid = Strings.nullToEmpty(msgGuid);
-    log.info(uuid);
-
     TBurgerCreate payload = GSON.fromJson(message, TBurgerCreate.class);
     executor.submit(() -> burgerOrderService.processOrder(payload));
   }

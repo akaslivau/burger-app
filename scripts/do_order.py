@@ -5,6 +5,9 @@ import uuid
 import aiohttp
 from kafka import KafkaProducer
 
+REST = 'rest'
+KAFKA = 'kafka'
+
 # kafka
 BROKER = '192.168.31.152:9092'
 TOPIC = 'order-burger-command'
@@ -17,12 +20,18 @@ headers = {
 
 # list
 orders = [
-  {'source': 'kafka', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 10},
-  # {'source': 'rest', 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 10},
+  {'source': KAFKA, 'name': 'CLASSIC', 'count': 10, 'times': 50},
+  {'source': KAFKA, 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 50},
+  {'source': KAFKA, 'name': 'SIMPLE_CHEESBURGER', 'count': 10, 'times': 50},
+  {'source': KAFKA, 'name': 'BACONIZER', 'count': 10, 'times': 50},
+  {'source': REST, 'name': 'CLASSIC', 'count': 10, 'times': 50},
+  {'source': REST, 'name': 'SIMPLE_HAMBURGER', 'count': 10, 'times': 50},
+  {'source': REST, 'name': 'SIMPLE_CHEESBURGER', 'count': 10, 'times': 50},
+  {'source': REST, 'name': 'BACONIZER', 'count': 10, 'times': 50},
 ]
 
-kafka = [x for x in orders if x['source'] == 'kafka']
-rest = [x for x in orders if x['source'] == 'rest']
+kafka = [x for x in orders if x['source'] == KAFKA]
+rest = [x for x in orders if x['source'] == REST]
 
 
 async def kafka_async():

@@ -23,20 +23,17 @@ import ru.did.burgers.enums.BurgerKindEnum;
 @Primary
 public class BurgerOrderService implements BurgerApiDelegate {
 
-  private static final Logger log = LogManager.getLogger(BurgerOrderService.class);
   private final KitchenService kitchenService;
-  private final AtomicLong count = new AtomicLong(0);
 
   @Override
   public ResponseEntity<Void> orderBurger(TBurgerCreate dto) {
-    log.info("Order # {}", count.incrementAndGet());
     processOrder(dto);
     return NO_CONTENT;
   }
 
   public void processOrder(TBurgerCreate dto) {
     BurgerOrder order = parse(dto);
-    kitchenService.acceptOrder(Collections.singleton(order));
+    kitchenService.acceptOrder(Collections.singletonList(order));
   }
 
   private BurgerOrder parse(TBurgerCreate dto) {

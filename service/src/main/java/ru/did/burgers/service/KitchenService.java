@@ -3,6 +3,7 @@ package ru.did.burgers.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,12 @@ public class KitchenService {
   private final ProductRepository productRepo;
   private final OrderRepository orderRepository;
 
+  private final AtomicLong counter = new AtomicLong(0);
+
   @Transactional
-  public void acceptOrder(Iterable<BurgerOrder> orders) {
+  public void acceptOrder(List<BurgerOrder> orders) {
+    log.info(counter.incrementAndGet());
+
     Map<ProductNameEnum, Long> products = countProducts(orders);
     boolean allProductsPresent = updateProducts(products);
     if (!allProductsPresent) {
@@ -55,9 +60,9 @@ public class KitchenService {
       Long count = entry.getValue();
 
       long productCount = productRepo.updateCount(product, count);
-        if (productCount < 0) {
-            return false;
-        }
+      if (productCount < 0) {
+        return false;
+      }
     }
     return true;
   }

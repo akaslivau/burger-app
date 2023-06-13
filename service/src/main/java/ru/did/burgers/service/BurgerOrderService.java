@@ -6,10 +6,8 @@ import static ru.did.burgers.utils.exception.ExceptionUtils.iifThrow;
 
 import java.util.Collections;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,7 @@ import ru.did.burgers.enums.BurgerKindEnum;
 public class BurgerOrderService implements BurgerApiDelegate {
 
   private final KitchenService kitchenService;
+  private final ReentrantLock lock = new ReentrantLock();
 
   @Override
   public ResponseEntity<Void> orderBurger(TBurgerCreate dto) {
@@ -33,7 +32,12 @@ public class BurgerOrderService implements BurgerApiDelegate {
 
   public void processOrder(TBurgerCreate dto) {
     BurgerOrder order = parse(dto);
-    kitchenService.acceptOrder(Collections.singletonList(order));
+    try {
+      lock.lock();
+      kitchenService.acceptOrder(Collections.singletonList(order));
+    } finally {
+      lock.unlock();
+    }
   }
 
   private BurgerOrder parse(TBurgerCreate dto) {

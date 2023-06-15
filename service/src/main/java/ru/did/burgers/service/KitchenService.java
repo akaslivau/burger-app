@@ -9,6 +9,8 @@ import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.did.burgers.domain.model.BurgerOrder;
@@ -29,8 +31,14 @@ public class KitchenService {
   private final AtomicLong counter = new AtomicLong(0);
 
   @Transactional
-  public void acceptOrder(List<BurgerOrder> orders) {
-    log.info(counter.incrementAndGet());
+  @Retryable(maxAttempts = 20,
+      backoff = @Backoff(
+          delay = 20,
+          multiplier = 1.25,
+          maxDelay = 3000
+      ))
+  public void acceptOrder(List<BurgerOrder> orders, String source) {
+    log.info(counter.incrementAndGet() + " (" + source + ")");
 
     Map<ProductNameEnum, Long> products = countProducts(orders);
     boolean allProductsPresent = updateProducts(products);

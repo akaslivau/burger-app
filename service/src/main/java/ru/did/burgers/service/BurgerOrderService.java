@@ -27,13 +27,13 @@ public class BurgerOrderService implements BurgerApiDelegate {
 
   @Override
   public ResponseEntity<Void> orderBurger(TBurgerCreate dto) {
-    processOrder(dto);
+    processOrder(dto, "REST" + Thread.currentThread().getName());
     return NO_CONTENT;
   }
 
-  public void processOrder(TBurgerCreate dto) {
+  public void processOrder(TBurgerCreate dto, String source) {
     BurgerOrder order = parse(dto);
-    kitchenService.acceptOrder(Collections.singletonList(order));
+    kitchenService.acceptOrder(Collections.singletonList(order), source);
   }
 
   private BurgerOrder parse(TBurgerCreate dto) {

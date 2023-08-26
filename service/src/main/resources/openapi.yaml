@@ -8,3 +8,5 @@ info:
 paths:
   /burger:
     $ref: "./api/burger_api.yaml#/~1burger"
+  /customer:
+    $ref: "./api/customer_api.yaml#/~1customer"

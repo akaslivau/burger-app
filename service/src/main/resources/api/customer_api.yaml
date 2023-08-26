@@ -1,0 +1,29 @@
+/customer:
+  post:
+    requestBody:
+      description: Добавить заказчика
+      content:
+        'application/json':
+          schema:
+            $ref: './schemas/customer_schema.yaml#/TCustomerCreate'
+    summary: Создать заказчика
+    operationId: createCustomer
+    tags:
+      - Customer
+    responses:
+      '201':
+        description: Создан
+  get:
+    summary: Получить всех заказчиков
+    operationId: findAllCustomers
+    tags:
+      - Customer
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: './schemas/customer_schema.yaml#/TCustomer'

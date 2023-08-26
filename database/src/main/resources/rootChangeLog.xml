@@ -7,5 +7,6 @@
 
     <include file="migrations/product.xml" relativeToChangelogFile="true"/>
     <include file="migrations/order.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/customer.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

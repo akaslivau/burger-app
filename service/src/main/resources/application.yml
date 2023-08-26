@@ -1,12 +1,10 @@
 server:
-  port : ${SERVER_PORT}
+  port : ${SERVER_PORT:7080}
   max-http-header-size: 100000
 spring:
-  profiles:
-    include: dev
   liquibase:
-    change-log: ${LIQUIBASE_CHANGELOG}
-    enabled: ${LIQUIBASE_ENABLED}
+    change-log: ${LIQUIBASE_CHANGELOG:classpath:rootChangeLog.xml}
+    enabled: ${LIQUIBASE_ENABLED:false}
   messages:
     basename: i18n.messages
   datasource:
@@ -28,7 +26,6 @@ spring:
         dialect: org.hibernate.dialect.PostgresPlusDialect
         default_schema: ${DB_SCHEMA:public}
   kafka:
-    enabled: ${KAFKA_ENABLED}
     bootstrap-servers: ${KAFKA_URL}
     admin:
       properties:
@@ -45,16 +42,3 @@ spring:
 integration:
   order:
     burger: ${ORDER_BURGER_COMMAND_TOPIC:order-burger-command}
-
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        SQL: DEBUG
-#        type:
-#          descriptor:
-#            sql:
-#              BasicBinder: TRACE
-#  level:
-#    org.hibernate.SQL: DEBUG
-#    org.hibernate.type: TRACE
